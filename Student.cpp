@@ -12,7 +12,7 @@ using namespace std;
  * @param students  : Student*  - array of students to add data to
  * @param n         : int       - number of students to add
  */
-void inputStudents(Student* students, int n) {
+void inputStudents(Student* students, const int n) {
     // iterate n times to get n students
     for (int i = 0; i < n; i++) {
         cout << "\nEnter data for student " << (i + 1) << "\n";
@@ -21,10 +21,20 @@ void inputStudents(Student* students, int n) {
         cin.ignore();
         cout << "Enter Name: ";
         getline(cin, students[i].name);
-        for (int j = 0; j < 3; j++) {
+
+        // get class marks
+        for (int j = 0; j < NUMBER_SUBJECTS; j++) {
             cout << "Enter marks for subject " << (j + 1) << ": ";
-            while (!(cin >> students[i].marks[j]));
+            // initialize mark to invalid value and place cin inside a wrapper while.
+            // now user will be forced to put in number to continue, and will be informed
+            // if number is invalid and request for more input.
+            int tempMark = 101;
+            while (tempMark < 0 || tempMark > 100) {
+                while (!(cin >> tempMark));
+            }
+            students[i].marks[j] = new Class(tempMark);
         }
+
         calculateStats(students[i]);
     }
 }
@@ -35,8 +45,12 @@ void inputStudents(Student* students, int n) {
  * @param s : Student& - reference to student calculate marks
  */
 void calculateStats(Student& s) {
-    s.total = s.marks[0] + s.marks[1] + s.marks[2];
+    int tempTotal = 0;
+    for (Class* i : s.marks) { tempTotal += i->getMark();}
+    s.total = tempTotal;
     s.average = s.total / 3.0f;
+    if (s.average < 50) { s.status = FAIL;}
+    else {s.status = PASS;}
 }
 
 /**

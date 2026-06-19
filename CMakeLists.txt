@@ -3,4 +3,6 @@ project(Labs)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(Labs main.cpp Student.cpp)
+add_executable(Labs main.cpp Student.cpp
+        Classes.h
+        Classes.cpp)

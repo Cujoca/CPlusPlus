@@ -1,14 +1,16 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
+#include "Classes.h"
 #include <string>
 
 struct Student {
     std::string name;
     int id;
-    float marks[3];
+    Class* marks[NUMBER_SUBJECTS];
     float total;
     float average;
+    Status status;
 };
 
 void inputStudents(Student* students, int n);
