@@ -4,13 +4,15 @@
 using namespace std;
 
 int main() {
-    int n;
     cout << "Enter number of students: ";
-    cin >> n;
 
-    Student* students = new Student[n];
+    int n = 0;
+    // keep looping until user inputs valid number of students
+    while (n < 1 || n > MAX_STUDENTS) { while (!(cin >> n)); }
 
-    inputStudents(students, n);
+    auto* students = new Student[n];
+
+    inputStudents(students);
     displayStudents(students, n);
     findHighestScorer(students, n);
     saveToFile(students, n, "students.txt");

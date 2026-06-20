@@ -7,21 +7,10 @@
 #include <string>
 #include <tuple>
 
-constexpr int NUMBER_SUBJECTS = 3;
+constexpr float PASS_THRESHOLD = 50.0;
 
 enum Status {PASS, FAIL};
 enum class Grade {A, B, C, D, F};
-
-class Class {
-    const int mark;
-    const Grade letter;
-
-public:
-    explicit Class(int mark);
-    int getMark() const;
-    std::tuple<std::string, std::string> stringify() const;
-    ~Class();
-};
 
 std::string statusStringify(Status status);
 std::string gradeStringify(Grade grade);
