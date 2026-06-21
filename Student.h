@@ -3,6 +3,7 @@
 
 #include "Subjects.h"
 #include <string>
+#include <vector>
 
 constexpr int MAX_STUDENTS = 1000;
 constexpr int NUM_SUBJECTS = 3;
@@ -16,12 +17,11 @@ struct Student {
     Status status;
 };
 
-void inputStudents(Student* students);
-std::string marksToString(Student* student);
-void calculateStats(Student& s);
-void displayStudents(const Student* students, int n);
-void findHighestScorer(const Student* students, int n);
-void saveToFile(const Student* students, int n, const std::string& filename);
-void loadFromFile(const std::string& filename);
+void inputStudents          (const std::vector<Student>& students);
+void calculateStats         (Student& s);
+void displayStudents        (const std::vector<Student>& students);
+void findHighestScorer      (const std::vector<Student>& students);
+void saveToFile             (const std::vector<Student>& students, const std::string& filename);
+void loadFromFile           (const std::string& filename);
 
 #endif

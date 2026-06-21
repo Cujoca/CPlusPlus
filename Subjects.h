@@ -5,7 +5,6 @@
 #ifndef CLASS_H
 #define CLASS_H
 #include <string>
-#include <tuple>
 
 constexpr float PASS_THRESHOLD = 50.0;
 
