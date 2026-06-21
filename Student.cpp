@@ -8,12 +8,10 @@
 using namespace std;
 
 /*
- * Prompts user for student info, then takes user input and places into
- * student constructs for later use.
+ * Function to intake student data from user and build them.
  *
- * @param students  : Student*  - array of students to add data to
  */
-void inputStudents(Student* students) {
+void inputStudents(const vector<Student>& students) {
 
     int i = 0;
     // set to check if user inputted ID has been used or not
@@ -22,7 +20,7 @@ void inputStudents(Student* students) {
     for (Student s : students) {
         cout << "Input information for student: " << i+1 << "\n";
 
-        string tempName = "";
+        string tempName;
         // regex to ensure that the name inputted has first last with:
         //  - must be alpha only
         //  - must have at least one letter in first and one in last
@@ -57,7 +55,9 @@ void inputStudents(Student* students) {
             do {
                 cout << "\nInput mark for class " << j+1 << ": ";
                 while (!(cin >> tempMark));
-                if (tempMark < 0 || usedID.contains(tempMark)) { cout << "\nOops, that was not a valid mark, try again"; }
+                if (tempMark < 0 || usedID.contains(tempMark)) {
+                    cout << "\nOops, that was not a valid mark, try again";
+                }
                 cin.clear();
             } while (tempMark < 0 || tempMark > 100);
         }
@@ -67,11 +67,16 @@ void inputStudents(Student* students) {
 
 /*
  * Calculates student total mark across 3 classes and the average (mean)
- *
- * @param s : Student& - reference to student calculate marks
+ * Then also sets the student's status based on the average.
  */
 void calculateStats(Student& s) {
-
+    float total = 0.0, average = 0.0;
+    for (int i = 0; i < NUM_SUBJECTS; i++) { total += s.marks[i]; }
+    average = total/NUM_SUBJECTS;
+    // check for status and set student values
+    if (average < 50) s.status = FAIL;
+    else s.status = PASS;
+    s.average = average;
 }
 
 /*
@@ -80,43 +85,75 @@ void calculateStats(Student& s) {
  * @param s : const Student& - reference to student to print
  */
 static void printStudent(const Student& s) {
+    cout << "\n" << s.name << "\n";
+    cout << "ID: " << s.id << "\n";
+    cout << "Average: " << s.average << "\n";
+    cout << "Status: " << statusStringify(s.status) << "\n";
+    cout << "Marks: ";
+    for (int i = 0; i < NUM_SUBJECTS; i++) {
+        cout << "Class "   << i+1  << ": "
+             << s.marks[i] << ": " << gradeStringify(markToGrade(s.marks[i])) << " ";
+    }
+    cout << "\n";
 }
 
 /*
- * Displays the array of students
- *
- * @param students  : Student*  - array of students to print
- * @param n         : int       - number of students to print
+ * Displays the vector of students
  */
-void displayStudents(const Student* students, int n) {
+void displayStudents(const vector<Student>& students) {
+    //iterator for loop
+    int i = 0;
+    for (auto s = students.begin(); s != students.end(); ++s, i++) {
+        cout << "\nStudent #" << i << ": \n";
+        printStudent(*s);
+    }
 }
 
 /*
  * Iterates through student array and finds student with highest total
- *
- * @param students  : Student*  - array of students to iterate through
- * @param n         : int       - number of students
  */
-void findHighestScorer(const Student* students, int n) {
+void findHighestScorer(const vector<Student>& students) {
+    float highest = 0.0;
+    int highestInd = 0;
+    for (int i = 0; i < students.size(); i++) {
+        if (students[i].total > highest) {
+            highest = students[i].total;
+            highestInd = i;
+        }
+    }
+    cout << "\nHighest Scorer: \n";
+    printStudent(students[highestInd]);
 }
 
 /*
  * Saves all information of students inputted to a txt file
- *
- * @param students  : Studnet*      - Array of students to save
- * @param n         : int           - Number of students
- * @param filename  : const string  - filepath to txt file
  */
-void saveToFile(const Student* students, int n, const string& filename) {
+void saveToFile(const vector<Student>& students, const string& filename) {
+    ofstream file;
+    file.open(filename);
+    for (const auto& s : students) {
+        file << s.name << " " << s.id << " ";
+        for (const float mark : s.marks) {
+            file << mark << " ";
+        }
+        file << "\n";
+    }
+    file.close();
 }
 
 /*
  * Finds txt file and loads students into system
- *
- * @param filename : const string& - filepath to student txt file
  */
 void loadFromFile(const string& filename) {
-}
-
-std::string marksToString(Student *student) {
+    ifstream file;
+    file.open(filename);
+    vector<Student> students;
+    string tempName;
+    int tempID;
+    float tempMark;
+    while (file >> tempName >> tempID) {
+        Student s;
+        s.name = tempName;
+        s.id = tempID;
+    }
 }

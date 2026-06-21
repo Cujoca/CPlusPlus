@@ -50,22 +50,3 @@ Grade markToGrade(const int mark) {
     if (mark < 80) return Grade::B;
     return Grade::A;
 }
-
-/**
- *  Returns a tuple of both members of Class stringified.
- *
- * @return : std::tuple<std::string, std::string> - the tuple of strings
- */
-tuple<string, string> Class::stringify() const {
-    return make_tuple(to_string(this->mark), gradeStringify(this->letter));
-}
-
-/**
- * Constructor for Class, needs init list since both members are const
- *
- * @param mark : int - mark for the class
- */
-Class::Class (const int mark): mark(mark), letter(markToGrade(mark)) {}
-
-int Class::getMark() const { return this->mark; }
-
