@@ -40,7 +40,7 @@ void inputStudents(const vector<Student>& students) {
         // checks if id is positive or if it has been used already
         do {
             cout << "\nInput student ID: ";
-            while (!(cin >> tempID));
+            while (!(cin >> tempID)) {}
             if (tempID < 0 || usedID.contains(tempID)) {
                 cout << "\nOops, that student ID is not valid, please try again\n";
             }
@@ -54,7 +54,7 @@ void inputStudents(const vector<Student>& students) {
 
             do {
                 cout << "\nInput mark for class " << j+1 << ": ";
-                while (!(cin >> tempMark));
+                while (!(cin >> tempMark)) {}
                 if (tempMark < 0 || usedID.contains(tempMark)) {
                     cout << "\nOops, that was not a valid mark, try again";
                 }
@@ -81,8 +81,6 @@ void calculateStats(Student& s) {
 
 /*
  * Given a student, print out all relevant information about said student
- *
- * @param s : const Student& - reference to student to print
  */
 static void printStudent(const Student& s) {
     cout << "\n" << s.name << "\n";
