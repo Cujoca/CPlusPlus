@@ -1,47 +1,34 @@
-//
-// Created by Andrei Cojocaru on 2026-06-18.
-//
-
 #include "Subjects.h"
 
 using namespace std;
 
-/**
- * Given an enum Status, return string for output
- *
- * @param status : Status - enum to stringify
- * @return
+/*
+ * Returns the string representation of a Status enum value
  */
-std::string statusStringify(const Status status) {
+std::string statusToString(const Status status) {
     switch (status) {
-        case PASS: { return "Pass"; }
-        case FAIL: { return "Fail"; }
-        default:   { return "N/A"; }
+        case PASS: return "PASS";
+        case FAIL: return "FAIL";
+        default:   return "N/A";
     }
 }
 
-/**
- * Given an enum Grade, return string for output
- *
- * @param grade : Grade - enum to stringify
- * @return
+/*
+ * Returns the letter string representation of a Grade enum value
  */
-std::string gradeStringify(const Grade grade) {
+std::string gradeToString(const Grade grade) {
     switch (grade) {
-        case Grade::A: { return "A"; }
-        case Grade::B: { return "B"; }
-        case Grade::C: { return "C"; }
-        case Grade::D: { return "D"; }
-        case Grade::F: { return "F"; }
-        default: {return "N/A";}
+        case Grade::A: return "A";
+        case Grade::B: return "B";
+        case Grade::C: return "C";
+        case Grade::D: return "D";
+        case Grade::F: return "F";
+        default:       return "N/A";
     }
 }
 
-/**
- * Given a class mark, return the associated letter grade.
- *
- * @param mark : int - class mark
- * @return : Grade - the appropriate letter grade
+/*
+ * Converts a numeric mark to its corresponding letter Grade enum value
  */
 Grade markToGrade(const int mark) {
     if (mark < 50) return Grade::F;

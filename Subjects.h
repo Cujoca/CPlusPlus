@@ -1,18 +1,15 @@
-//
-// Created by AndreiCojocaru on 2026-06-18.
-//
-
 #ifndef CLASS_H
 #define CLASS_H
 #include <string>
 
-constexpr float PASS_THRESHOLD = 50.0;
+constexpr float PASS_THRESHOLD = 50.0f;
 
-enum Status {PASS, FAIL};
-enum class Grade {A, B, C, D, F};
+enum Status { FAIL, PASS };
 
-std::string statusStringify(Status status);
-std::string gradeStringify(Grade grade);
-Grade markToGrade(int mark);
+enum class Grade { A, B, C, D, F };
 
-#endif //CLASS_H
+std::string statusToString(Status status);
+std::string gradeToString(Grade grade);
+Grade       markToGrade(int mark);
+
+#endif

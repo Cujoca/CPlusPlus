@@ -1,7 +1,4 @@
-2
-123
-Andrei
-100 100 100
-123
-Vasu
-10 5 1
+ID|Name|Mark1|Mark2|Mark3|Total|Average|Grade|Status
+1001|Alice|92.00|90.00|95.00|277.00|92.33|A|PASS
+1003|Charlie|70.00|75.00|80.00|225.00|75.00|B|PASS
+1002|Bob|45.00|40.00|50.00|135.00|45.00|F|FAIL

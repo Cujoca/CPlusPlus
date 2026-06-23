@@ -5,4 +5,8 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_executable(Labs main.cpp Student.cpp
         Subjects.h
-        Subjects.cpp)
+        Subjects.cpp
+        Helper.h
+        Helper.cpp
+        Functional.cpp
+        Functional.h)
