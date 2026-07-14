@@ -9,4 +9,6 @@ add_executable(Labs main.cpp Student.cpp
         Helper.h
         Helper.cpp
         Functional.cpp
-        Functional.h)
+        Functional.h
+        Employee.cpp
+        Employee.h)

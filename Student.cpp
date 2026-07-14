@@ -7,6 +7,8 @@
 #include <vector>
 #include <set>
 
+#include "Functional.h"
+
 using namespace std;
 
 // definitions for the Student static counter and the volatile file-write flag
@@ -16,7 +18,7 @@ volatile bool fileWriteInProgress = false;
 /*
  * Returns true if the given ID is already present in the student array
  */
-bool isDuplicateId(const Student* students, int count, int id) {
+bool Student::isDuplicateId(const Student* students, int count, int id) {
     // poopy array iterator, has to check whole array every time.
     // should probably change to a set but I'm lazy
     for (int i = 0; i < count; i++) {
@@ -29,7 +31,7 @@ bool isDuplicateId(const Student* students, int count, int id) {
  * Searches the student array for a matching ID using iterator-based traversal.
  * Returns the index of the student, or -1 if not found.
  */
-int findStudentIndexById(const unique_ptr<Student[]>& students, int count, int id) {
+int Student::findStudentIndexById(const unique_ptr<Student[]>& students, int count, int id) {
     const Student* begin = students.get();
     const Student* end   = begin + count;
     auto it = find_if(begin, end, [id](const Student& s) { return s.id == id; });
@@ -40,7 +42,7 @@ int findStudentIndexById(const unique_ptr<Student[]>& students, int count, int i
 /*
  * Copies all fields from one Student struct to another
  */
-void copyStudent(Student& dst, const Student& src) {
+void Student::copyStudent(Student& dst, const Student& src) {
     dst.name    = src.name;
     dst.id      = src.id;
     for (int i = 0; i < SUBJECT_COUNT; i++) dst.marks[i] = src.marks[i];
@@ -51,11 +53,20 @@ void copyStudent(Student& dst, const Student& src) {
 }
 
 /*
+ * Compares left student to right student by average
+ * left average less than right
+ */
+bool Student::operator< ( const Student& rhs) const {
+    if (average < rhs.average) return true;
+    return false;
+}
+
+/*
  * Sums all subject marks for the given student
  */
-float calculateTotal(const Student& student) {
+float Student::calculateTotal() const {
     float total = 0.0f;
-    for (int i = 0; i < SUBJECT_COUNT; i++) total += student.marks[i];
+    for (int i = 0; i < SUBJECT_COUNT; i++) total += marks[i];
     return total;
 }
 
@@ -63,21 +74,21 @@ float calculateTotal(const Student& student) {
  * Computes the average mark from the total across all subjects.
  * Uses static_cast to avoid integer division.
  */
-float calculateAverage(float total) {
+float Student::calculateAverage() const {
     return total / static_cast<float>(SUBJECT_COUNT);
 }
 
 /*
  * Checks if student's average is above or below pass threshold
  */
-Status determineStatus(float average) {
+Status Student::determineStatus() const {
     return (average >= PASS_THRESHOLD) ? PASS : FAIL;
 }
 
 /*
  * Assigns a letter grade based on the average mark:
  */
-Grade determineGrade(float average) {
+Grade Student::determineGrade(float average) {
     if (average >= 80.0f) return Grade::A;
     if (average >= 70.0f) return Grade::B;
     if (average >= 60.0f) return Grade::C;
@@ -89,7 +100,7 @@ Grade determineGrade(float average) {
  * Recalculates and updates the total, average, status, and grade for a student.
  * Called whenever a student's marks are changed.
  */
-void recalculateStudent(Student& student) {
+void Student::recalculateStudent(Student& student) {
     student.total   = calculateTotal(student);
     student.average = calculateAverage(student.total);
     student.status  = determineStatus(student.average);
@@ -99,7 +110,7 @@ void recalculateStudent(Student& student) {
 /*
  * Prints the column header row and separator line for the student table
  */
-static void printTableHeader() {
+void Student::printTableHeader() {
     cout << left  << setw(6)  << "ID"
          << setw(20) << "Name"
          << right << setw(8)  << "M1"
@@ -115,7 +126,7 @@ static void printTableHeader() {
 /*
  * Prints a single student as one formatted row in the table
  */
-static void printStudentRow(const Student& s) {
+void Student::printStudentRow(const Student& s) {
     cout << fixed << setprecision(2);
     cout << left  << setw(6)  << s.id
          << setw(20) << s.name
@@ -133,7 +144,7 @@ static void printStudentRow(const Student& s) {
  * Allocates a new unique_ptr array large enough for existing and new records,
  * copies existing students (index-based), then collects input for each new entry.
  */
-void addStudents(unique_ptr<Student[]>& students, int& count) {
+void Student::addStudents(unique_ptr<Student[]>& students, int& count) {
     const int maxNew = MAX_STUDENTS - count;
     // check if limit reached and update count for new students if not
     if (maxNew <= 0) {
@@ -183,7 +194,7 @@ void addStudents(unique_ptr<Student[]>& students, int& count) {
  * Displays all student records in a formatted table using a range-based loop.
  * Prints a warning if no students exist.
  */
-void displayStudents(const unique_ptr<Student[]>& students, int count) {
+void Student::displayStudents(const unique_ptr<Student[]>& students, int count) {
     // edge case checking
     if (count == 0) {
         cout << "No students available.\n";
@@ -202,7 +213,7 @@ void displayStudents(const unique_ptr<Student[]>& students, int count) {
  * Prompts for a student ID and displays the matching record if found.
  * Uses iterator-based traversal internally via findStudentIndexById.
  */
-void searchStudentById(const unique_ptr<Student[]>& students, int count) {
+void Student::searchStudentById(const unique_ptr<Student[]>& students, int count) {
     // edge case checking
     if (count == 0) {
         cout << "No students to search.\n";
@@ -226,7 +237,7 @@ void searchStudentById(const unique_ptr<Student[]>& students, int count) {
  * Pressing Enter on any field keeps the current value.
  * Recalculates derived fields after any change.
  */
-void editStudent(unique_ptr<Student[]>& students, int count) {
+void Student::editStudent(unique_ptr<Student[]>& students, int count) {
     // edge case checking
     if (count == 0) {
         cout << "No students to edit.\n";
@@ -277,7 +288,7 @@ void editStudent(unique_ptr<Student[]>& students, int count) {
  * Rebuilds the array without the deleted entry using an index-based loop.
  * The old unique_ptr array is freed automatically on reassignment.
  */
-void deleteStudent(unique_ptr<Student[]>& students, int& count) {
+void Student::deleteStudent(unique_ptr<Student[]>& students, int& count) {
     // edge case checking
     if (count == 0) {
         cout << "No students to delete.\n";
@@ -320,7 +331,7 @@ void deleteStudent(unique_ptr<Student[]>& students, int& count) {
  * Uses iterator-based traversal via std::max_element over the raw pointer range.
  * If two students share the highest average, the first one found is displayed.
  */
-void findHighestScorer(const unique_ptr<Student[]>& students, int count) {
+void Student::findHighestScorer(const unique_ptr<Student[]>& students, int count) {
     // edge case checking
     if (count == 0) {
         cout << "No students available.\n";
@@ -345,7 +356,7 @@ void findHighestScorer(const unique_ptr<Student[]>& students, int count) {
  * pass/fail counts, highest average, and pass rate.
  * Uses a range-based loop via std::span for summary processing.
  */
-void displayClassSummary(const unique_ptr<Student[]>& students, int count) {
+void Student::displayClassSummary(const unique_ptr<Student[]>& students, int count) {
     // edge case checking
     if (count == 0) {
         cout << "No students available for summary.\n";
@@ -381,7 +392,7 @@ void displayClassSummary(const unique_ptr<Student[]>& students, int count) {
  * Sorts the student array in-place by name (ascending) or average (descending)
  * based on the user's choice. Uses std::sort with raw pointer iterators.
  */
-void sortStudents(unique_ptr<Student[]>& students, int count) {
+void Student::sortStudents(unique_ptr<Student[]>& students, int count) {
     // edge case checking
     if (count < 2) {
         cout << "Not enough students to sort.\n";
@@ -395,7 +406,7 @@ void sortStudents(unique_ptr<Student[]>& students, int count) {
     Student* begin = students.get();
     Student* end   = begin + count;
 
-    // is just a 2 branch possiblity so no need for case
+    // is just a 2 branch possibility so no need for case
     if (choice == 1) {
         sort(begin, end, [](const Student& a, const Student& b) {
             // sort using student name
@@ -416,7 +427,7 @@ void sortStudents(unique_ptr<Student[]>& students, int count) {
  * Sets the volatile fileWriteInProgress flag for the duration of the write.
  * Displays a warning if there are no students to save.
  */
-void saveToFile(const unique_ptr<Student[]>& students, int count) {
+void Student::saveToFile(const unique_ptr<Student[]>& students, int count) {
     // edge case checking
     if (count == 0) {
         cout << "No students to save.\n";
@@ -451,7 +462,7 @@ void saveToFile(const unique_ptr<Student[]>& students, int count) {
  * incomplete lines, invalid IDs, duplicate IDs, empty names, and out-of-range
  * marks are all silently warned about and skipped.
  */
-void loadFromFile(unique_ptr<Student[]>& students, int& count) {
+void Student::loadFromFile(unique_ptr<Student[]>& students, int& count) {
     ifstream file("students.txt");
     // check that the file exists
     if (!file.is_open()) {
