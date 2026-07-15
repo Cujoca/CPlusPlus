@@ -17,8 +17,8 @@ float SalariedEmployee::calculatePay() const {
 
 void SalariedEmployee::display() const {
     cout << fixed << setprecision(2);
-    cout << "Salaried Employee: " << name << "\n"
-         << "  Base:       " << salary << "\n"
-         << "  Bonus:      " << bonus << "\n"
-         << "  Total Pay:  " << calculatePay() << "\n";
+    cout << "Salaried Employee: " << name << endl
+         << "  Base:       " << salary << endl
+         << "  Bonus:      " << bonus << endl
+         << "  Total Pay:  " << calculatePay() << endl;
 }

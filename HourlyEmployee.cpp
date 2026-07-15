@@ -17,9 +17,9 @@ float HourlyEmployee::calculatePay() const {
 
 void HourlyEmployee::display() const {
     cout << fixed << setprecision(2);
-    cout << "Hourly Employee: " << name << "\n"
-         << "  Hours:      " << hours << "\n"
-         << "  Rate:       " << rate << "\n"
-         << "  Base:       " << salary << "\n"
-         << "  Total Pay:  " << calculatePay() << "\n";
+    cout << "Hourly Employee: " << name << endl
+         << "  Hours:      " << hours << endl
+         << "  Rate:       " << rate << endl
+         << "  Base:       " << salary << endl
+         << "  Total Pay:  " << calculatePay() << endl;
 }

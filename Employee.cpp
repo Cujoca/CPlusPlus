@@ -18,10 +18,10 @@ constexpr float MAX_MONEY = 1000000.0f;
  * appends the new employee to the roster.
  */
 void addEmployee(EmployeeList& employees) {
-    cout << "\n--- Add Employee ---\n";
-    cout << "1. Salaried\n";
-    cout << "2. Hourly\n";
-    cout << "3. Commission\n";
+    cout << endl << "--- Add Employee ---" << endl;
+    cout << "1. Salaried" << endl;
+    cout << "2. Hourly" << endl;
+    cout << "3. Commission" << endl;
 
     const int type = getValidatedInt("Select employee type: ", 1, 3);
     const string name = getValidatedName("Enter name: ");
@@ -49,22 +49,22 @@ void addEmployee(EmployeeList& employees) {
         default: break;
     }
 
-    cout << "Employee added successfully.\n";
+    cout << "Employee added successfully." << endl;
 }
 
 /*
  * Displays every employee on the roster using each one's own display() override.
  */
 void displayEmployees(const EmployeeList& employees) {
-    cout << "\n--- All Employees ---\n";
+    cout << endl << "--- All Employees ---" << endl;
     if (employees.empty()) {
-        cout << "No employees to display.\n";
+        cout << "No employees to display." << endl;
         return;
     }
 
     int index = 1;
     for (const auto& employee : employees) {
-        cout << "\n[" << index++ << "] ";
+        cout << endl << "[" << index++ << "] ";
         employee->display();
     }
 }
@@ -74,9 +74,9 @@ void displayEmployees(const EmployeeList& employees) {
  * Ties are broken by whichever was added first.
  */
 void findHighestPaidEmployee(const EmployeeList& employees) {
-    cout << "\n--- Highest Paid Employee ---\n";
+    cout << endl << "--- Highest Paid Employee ---" << endl;
     if (employees.empty()) {
-        cout << "No employees on record.\n";
+        cout << "No employees on record." << endl;
         return;
     }
 

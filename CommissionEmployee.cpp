@@ -15,9 +15,9 @@ float CommissionEmployee::calculatePay() const { return salary + (sales * rate);
 
 void CommissionEmployee::display() const {
     cout << fixed << setprecision(2);
-    cout << "Commission Employee: " << name << "\n"
-         << "  Sales:      " << sales << "\n"
-         << "  Rate:       " << rate << "\n"
-         << "  Base:       " << salary << "\n"
-         << "  Total Pay:  " << calculatePay() << "\n";
+    cout << "Commission Employee: " << name << endl
+         << "  Sales:      " << sales << endl
+         << "  Rate:       " << rate << endl
+         << "  Base:       " << salary << endl
+         << "  Total Pay:  " << calculatePay() << endl;
 }

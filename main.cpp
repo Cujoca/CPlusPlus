@@ -16,18 +16,18 @@ int main() {
 
     int choice;
     do {
-        cout << "\n===== Enhanced Student Management System =====\n";
-        cout << " 1. Add student records\n";
-        cout << " 2. Display all students\n";
-        cout << " 3. Search student by ID\n";
-        cout << " 4. Edit student record\n";
-        cout << " 5. Delete student record\n";
-        cout << " 6. Find highest scoring student\n";
-        cout << " 7. Display class summary\n";
-        cout << " 8. Sort students\n";
-        cout << " 9. Save records to file\n";
-        cout << "10. Load records from file\n";
-        cout << "11. Exit\n";
+        cout << endl << "===== Enhanced Student Management System =====" << endl;
+        cout << " 1. Add student records" << endl;
+        cout << " 2. Display all students" << endl;
+        cout << " 3. Search student by ID" << endl;
+        cout << " 4. Edit student record" << endl;
+        cout << " 5. Delete student record" << endl;
+        cout << " 6. Find highest scoring student" << endl;
+        cout << " 7. Display class summary" << endl;
+        cout << " 8. Sort students" << endl;
+        cout << " 9. Save records to file" << endl;
+        cout << "10. Load records from file" << endl;
+        cout << "11. Exit" << endl;
 
         choice = getValidatedInt("Enter your choice: ", 1, 11);
 
@@ -43,18 +43,18 @@ int main() {
             case 9:  saveToFile         (students, count); break;
             case 10: loadFromFile       (students, count); break;
             case 11: cout << "Exiting. Total students created: "
-                          << Student::getTotalCreated() << "\n"; break;
+                          << Student::getTotalCreated() << endl; break;
         }
     } while (choice != 11);
 
     EmployeeList employees;
 
     do {
-        cout << "\n===== Employee Management System =====\n";
-        cout << "1. Add employee\n";
-        cout << "2. Display all employees\n";
-        cout << "3. Find highest paid employee\n";
-        cout << "4. Exit\n";
+        cout << endl << "===== Employee Management System =====" << endl;
+        cout << "1. Add employee" << endl;
+        cout << "2. Display all employees" << endl;
+        cout << "3. Find highest paid employee" << endl;
+        cout << "4. Exit" << endl;
 
         choice = getValidatedInt("Enter your choice: ", 1, 4);
 
@@ -62,7 +62,7 @@ int main() {
             case 1: addEmployee            (employees); break;
             case 2: displayEmployees       (employees); break;
             case 3: findHighestPaidEmployee(employees); break;
-            case 4: cout << "Exiting.\n"; break;
+            case 4: cout << "Exiting." << endl; break;
         }
     } while (choice != 4);
 

@@ -35,29 +35,29 @@ int getValidatedInt(const string& prompt, const int min, const int max) {
         cout << prompt;
         string line;
         if (!getline(cin, line)) {
-            cout << "\nInput stream closed with no value entered "
-                    "(end of input, or Ctrl+Z / Ctrl+D). Nothing left to read, so exiting.\n";
+            cout << endl << "Input stream closed with no value entered "
+                    "(end of input, or Ctrl+Z / Ctrl+D). Nothing left to read, so exiting." << endl;
             exit(0);
         }
         const string s = trim(line);
         if (s.empty()) {
-            cout << "Input cannot be empty.\n";
+            cout << "Input cannot be empty." << endl;
             continue;
         }
         try {
             size_t pos;
             const long long val = stoll(s, &pos);
             if (pos != s.size()) {
-                cout << "Invalid input. Please enter a whole number.\n";
+                cout << "Invalid input. Please enter a whole number." << endl;
                 continue;
             }
             if (val < min || val > max) {
-                cout << "Please enter a number between " << min << " and " << max << ".\n";
+                cout << "Please enter a number between " << min << " and " << max << "." << endl;
                 continue;
             }
             return static_cast<int>(val);
         } catch (...) {
-            cout << "Invalid input. Please enter a whole number.\n";
+            cout << "Invalid input. Please enter a whole number." << endl;
         }
     }
 }
@@ -73,23 +73,23 @@ float getValidatedMark(const string& prompt) {
         getline(cin, line);
         const string s = trim(line);
         if (s.empty()) {
-            cout << "Input cannot be empty.\n";
+            cout << "Input cannot be empty." << endl;
             continue;
         }
         try {
             size_t pos;
             const float val = stof(s, &pos);
             if (pos != s.size()) {
-                cout << "Invalid input. Please enter a numeric mark.\n";
+                cout << "Invalid input. Please enter a numeric mark." << endl;
                 continue;
             }
             if (val < 0.0f || val > 100.0f) {
-                cout << "Mark must be between 0 and 100.\n";
+                cout << "Mark must be between 0 and 100." << endl;
                 continue;
             }
             return val;
         } catch (...) {
-            cout << "Invalid input. Please enter a numeric mark.\n";
+            cout << "Invalid input. Please enter a numeric mark." << endl;
         }
     }
 }
@@ -105,23 +105,23 @@ float getValidatedFloat(const string& prompt, const float min, const float max) 
         getline(cin, line);
         const string s = trim(line);
         if (s.empty()) {
-            cout << "Input cannot be empty.\n";
+            cout << "Input cannot be empty." << endl;
             continue;
         }
         try {
             size_t pos;
             const float val = stof(s, &pos);
             if (pos != s.size()) {
-                cout << "Invalid input. Please enter a number.\n";
+                cout << "Invalid input. Please enter a number." << endl;
                 continue;
             }
             if (val < min || val > max) {
-                cout << "Please enter a number between " << min << " and " << max << ".\n";
+                cout << "Please enter a number between " << min << " and " << max << "." << endl;
                 continue;
             }
             return val;
         } catch (...) {
-            cout << "Invalid input. Please enter a number.\n";
+            cout << "Invalid input. Please enter a number." << endl;
         }
     }
 }
@@ -135,7 +135,7 @@ float getValidatedWage(const string& prompt) {
         const float rate = getValidatedFloat(prompt, 0.0f, MAX_WAGE);
         if (rate >= MINIMUM_WAGE) return rate;
         cout << "Minimum wage is $" << MINIMUM_WAGE
-             << " buddy. Try paying your workers an actual wage\n";
+             << " buddy. Try paying your workers an actual wage" << endl;
     }
 }
 
@@ -149,7 +149,7 @@ string getValidatedName(const string& prompt) {
         getline(cin, line);
         const string name = trim(line);
         if (!name.empty()) return name;
-        cout << "Name cannot be empty or whitespace only.\n";
+        cout << "Name cannot be empty or whitespace only." << endl;
     }
 }
 

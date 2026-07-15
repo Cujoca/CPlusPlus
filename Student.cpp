@@ -118,8 +118,8 @@ void printTableHeader() {
                   << setw(10) << "Total"
                   << setw(8)  << "Avg"
                   << setw(7)  << "Grade"
-                  << setw(8)  << "Status" << "\n";
-    cout << string(83, '-') << "\n";
+                  << setw(8)  << "Status" << endl;
+    cout << string(83, '-') << endl;
 }
 
 /*
@@ -135,7 +135,7 @@ void printStudentRow(const Student& s) {
                   << setw(10) << s.getTotal()
                   << setw(8)  << s.getAverage()
                   << setw(7)  << gradeToString(s.getGrade())
-                  << setw(8)  << statusToString(s.getStatus()) << "\n";
+                  << setw(8)  << statusToString(s.getStatus()) << endl;
 }
 
 /*
@@ -147,7 +147,7 @@ void addStudents(unique_ptr<Student[]>& students, int& count) {
     const int maxNew = MAX_STUDENTS - count;
     // check if limit reached and update count for new students if not
     if (maxNew <= 0) {
-        cout << "Maximum student limit (" << MAX_STUDENTS << ") reached.\n";
+        cout << "Maximum student limit (" << MAX_STUDENTS << ") reached." << endl;
         return;
     }
     const int newCount = getValidatedInt("Enter number of students to add: ", 1, maxNew);
@@ -162,7 +162,7 @@ void addStudents(unique_ptr<Student[]>& students, int& count) {
 
     // index-based loop: collect and validate input for each new student
     for (int i = count; i < count + newCount; i++) {
-        cout << "\nStudent " << (i - count + 1) << "\n";
+        cout << endl << "Student " << (i - count + 1) << endl;
 
         newStudents[i].setName(getValidatedName("Name: "));
 
@@ -171,7 +171,7 @@ void addStudents(unique_ptr<Student[]>& students, int& count) {
         while (true) {
             id = getValidatedInt("ID: ", 1, 999999);
             if (!isDuplicateId(newStudents.get(), i, id)) break;
-            cout << "Duplicate ID. Please enter a unique ID.\n";
+            cout << "Duplicate ID. Please enter a unique ID." << endl;
         }
         newStudents[i].setId(id);
 
@@ -196,16 +196,16 @@ void addStudents(unique_ptr<Student[]>& students, int& count) {
 void displayStudents(const unique_ptr<Student[]>& students, const int count) {
     // edge case checking
     if (count == 0) {
-        cout << "No students available.\n";
+        cout << "No students available." << endl;
         return;
     }
-    cout << "\n===== Student Records =====\n";
+    cout << endl << "===== Student Records =====" << endl;
     printTableHeader();
     // range-based loop via std::span over the raw array
     for (const auto& s : span<const Student>(students.get(), count)) {
         printStudentRow(s);
     }
-    cout << "\n";
+    cout << endl;
 }
 
 /*
@@ -215,20 +215,20 @@ void displayStudents(const unique_ptr<Student[]>& students, const int count) {
 void searchStudentById(const unique_ptr<Student[]>& students, const int count) {
     // edge case checking
     if (count == 0) {
-        cout << "No students to search.\n";
+        cout << "No students to search." << endl;
         return;
     }
     // grab id from user then searches
     const int id  = getValidatedInt("Enter student ID to search: ", 1, 999999);
     const int idx = findStudentIndexById(students, count, id);
     if (idx == -1) {
-        cout << "No student found with ID " << id << ".\n";
+        cout << "No student found with ID " << id << "." << endl;
         return;
     }
-    cout << "\n===== Student Found =====\n";
+    cout << endl << "===== Student Found =====" << endl;
     printTableHeader();
     printStudentRow(students[idx]);
-    cout << "\n";
+    cout << endl;
 }
 
 /*
@@ -239,20 +239,20 @@ void searchStudentById(const unique_ptr<Student[]>& students, const int count) {
 void editStudent(unique_ptr<Student[]>& students, const int count) {
     // edge case checking
     if (count == 0) {
-        cout << "No students to edit.\n";
+        cout << "No students to edit." << endl;
         return;
     }
     // get student id to edit, exits prematurely if id not found
     const int id  = getValidatedInt("Enter student ID to edit: ", 1, 999999);
     const int idx = findStudentIndexById(students, count, id);
     if (idx == -1) {
-        cout << "No student found with ID " << id << ".\n";
+        cout << "No student found with ID " << id << "." << endl;
         return;
     }
 
     // grab student to be edited
     Student& s = students[idx];
-    cout << "Editing: " << s.getName() << " (ID " << s.getId() << "). Press Enter to keep current value.\n";
+    cout << "Editing: " << s.getName() << " (ID " << s.getId() << "). Press Enter to keep current value." << endl;
 
     string input;
     cout << "Name [" << s.getName() << "]: ";
@@ -272,14 +272,14 @@ void editStudent(unique_ptr<Student[]>& students, const int count) {
                 if (pos == t.size() && m >= 0.0f && m <= 100.0f)
                     s.setMark(j, m);
                 else
-                    cout << "Invalid mark, keeping previous value.\n";
+                    cout << "Invalid mark, keeping previous value." << endl;
             } catch (...) {
-                cout << "Invalid mark, keeping previous value.\n";
+                cout << "Invalid mark, keeping previous value." << endl;
             }
         }
     }
     s.recalculate();
-    cout << "Student record updated.\n";
+    cout << "Student record updated." << endl;
 }
 
 /*
@@ -290,14 +290,14 @@ void editStudent(unique_ptr<Student[]>& students, const int count) {
 void deleteStudent(unique_ptr<Student[]>& students, int& count) {
     // edge case checking
     if (count == 0) {
-        cout << "No students to delete.\n";
+        cout << "No students to delete." << endl;
         return;
     }
     // get student id from user for deletion, end prematurely if not found
     const int id  = getValidatedInt("Enter student ID to delete: ", 1, 999999);
     const int idx = findStudentIndexById(students, count, id);
     if (idx == -1) {
-        cout << "No student found with ID " << id << ".\n";
+        cout << "No student found with ID " << id << "." << endl;
         return;
     }
 
@@ -305,7 +305,7 @@ void deleteStudent(unique_ptr<Student[]>& students, int& count) {
     if (count == 1) {
         students.reset(); // releases the array, leaving students as nullptr
         count = 0;
-        cout << "Student deleted. No students remaining.\n";
+        cout << "Student deleted. No students remaining." << endl;
         return;
     }
 
@@ -322,7 +322,7 @@ void deleteStudent(unique_ptr<Student[]>& students, int& count) {
 
     // old array freed automatically
     students = std::move(newStudents);
-    cout << "Student with ID " << id << " deleted.\n";
+    cout << "Student with ID " << id << " deleted." << endl;
 }
 
 /*
@@ -333,7 +333,7 @@ void deleteStudent(unique_ptr<Student[]>& students, int& count) {
 void findHighestScorer(const unique_ptr<Student[]>& students, const int count) {
     // edge case checking
     if (count == 0) {
-        cout << "No students available.\n";
+        cout << "No students available." << endl;
         return;
     }
     // iterator-based: std::max_element over raw pointer range
@@ -344,10 +344,10 @@ void findHighestScorer(const unique_ptr<Student[]>& students, const int count) {
         // use average as comparison for max_element
         return a.getAverage() < b.getAverage();
     });
-    cout << "\n===== Highest Scoring Student =====\n";
+    cout << endl << "===== Highest Scoring Student =====" << endl;
     printTableHeader();
     printStudentRow(*it);
-    cout << "\n";
+    cout << endl;
 }
 
 /*
@@ -358,7 +358,7 @@ void findHighestScorer(const unique_ptr<Student[]>& students, const int count) {
 void displayClassSummary(const unique_ptr<Student[]>& students, const int count) {
     // edge case checking
     if (count == 0) {
-        cout << "No students available for summary.\n";
+        cout << "No students available for summary." << endl;
         return;
     }
 
@@ -378,13 +378,13 @@ void displayClassSummary(const unique_ptr<Student[]>& students, const int count)
     const float passRate = (static_cast<float>(passed) / static_cast<float>(count)) * 100.0f;
 
     cout << fixed << setprecision(2);
-    cout << "\n===== Class Summary =====\n";
-    cout << left << setw(18) << "Total Students" << ": " << count      << "\n";
-    cout << left << setw(18) << "Class Average"  << ": " << classAvg   << "\n";
-    cout << left << setw(18) << "Passed"         << ": " << passed     << "\n";
-    cout << left << setw(18) << "Failed"         << ": " << failed     << "\n";
-    cout << left << setw(18) << "Highest Avg"    << ": " << highestAvg << "\n";
-    cout << left << setw(18) << "Pass Rate"      << ": " << passRate   << "%\n\n";
+    cout << endl << "===== Class Summary =====" << endl;
+    cout << left << setw(18) << "Total Students" << ": " << count      << endl;
+    cout << left << setw(18) << "Class Average"  << ": " << classAvg   << endl;
+    cout << left << setw(18) << "Passed"         << ": " << passed     << endl;
+    cout << left << setw(18) << "Failed"         << ": " << failed     << endl;
+    cout << left << setw(18) << "Highest Avg"    << ": " << highestAvg << endl;
+    cout << left << setw(18) << "Pass Rate"      << ": " << passRate   << "%" << endl << endl;
 }
 
 /*
@@ -394,11 +394,11 @@ void displayClassSummary(const unique_ptr<Student[]>& students, const int count)
 void sortStudents(unique_ptr<Student[]>& students, const int count) {
     // edge case checking
     if (count < 2) {
-        cout << "Not enough students to sort.\n";
+        cout << "Not enough students to sort." << endl;
         return;
     }
     // see how to sort
-    cout << "Sort by:\n1. Name (ascending)\n2. Average (descending)\n";
+    cout << "Sort by:" << endl << "1. Name (ascending)" << endl << "2. Average (descending)" << endl;
     const int choice = getValidatedInt("Choice: ", 1, 2);
 
     // init iterators
@@ -411,13 +411,13 @@ void sortStudents(unique_ptr<Student[]>& students, const int count) {
             // sort using student name
             return a.getName() < b.getName();
         });
-        cout << "Sorted by name (ascending).\n";
+        cout << "Sorted by name (ascending)." << endl;
     } else {
         sort(begin, end, [](const Student& a, const Student& b) {
             // sort using student average
             return a.getAverage() > b.getAverage();
         });
-        cout << "Sorted by average (descending).\n";
+        cout << "Sorted by average (descending)." << endl;
     }
 }
 
@@ -429,7 +429,7 @@ void sortStudents(unique_ptr<Student[]>& students, const int count) {
 void saveToFile(const unique_ptr<Student[]>& students, const int count) {
     // edge case checking
     if (count == 0) {
-        cout << "No students to save.\n";
+        cout << "No students to save." << endl;
         return;
     }
     // let program know file is being used
@@ -437,22 +437,22 @@ void saveToFile(const unique_ptr<Student[]>& students, const int count) {
     ofstream file("students.txt");
     // check that file exists
     if (!file.is_open()) {
-        cout << "Error: Could not open students.txt for writing.\n";
+        cout << "Error: Could not open students.txt for writing." << endl;
         fileWriteInProgress = false;
         return;
     }
     file << fixed << setprecision(2);
-    file << "ID|Name|Mark1|Mark2|Mark3|Total|Average|Grade|Status\n";
+    file << "ID|Name|Mark1|Mark2|Mark3|Total|Average|Grade|Status" << endl;
     for (const auto& s : span<const Student>(students.get(), count)) {
         file << s.getId()        << "|" << s.getName()    << "|"
              << s.getMark(0)     << "|" << s.getMark(1)   << "|" << s.getMark(2) << "|"
              << s.getTotal()     << "|" << s.getAverage() << "|"
              << gradeToString(s.getGrade())   << "|"
-             << statusToString(s.getStatus()) << "\n";
+             << statusToString(s.getStatus()) << endl;
     }
     file.close();
     fileWriteInProgress = false;
-    cout << "Records saved to students.txt successfully.\n";
+    cout << "Records saved to students.txt successfully." << endl;
 }
 
 /*
@@ -465,14 +465,14 @@ void loadFromFile(unique_ptr<Student[]>& students, int& count) {
     ifstream file("students.txt");
     // check that the file exists
     if (!file.is_open()) {
-        cout << "Warning: students.txt not found.\n";
+        cout << "Warning: students.txt not found." << endl;
         return;
     }
 
     string line;
     // skip the header line
     if (!getline(file, line)) {
-        cout << "No records available.\n";
+        cout << "No records available." << endl;
         return;
     }
 
@@ -486,7 +486,7 @@ void loadFromFile(unique_ptr<Student[]>& students, int& count) {
 
         const auto tokens = splitLine(line, '|');
         if (tokens.size() < 9) {
-            cout << "Warning: line " << lineNum << " is incomplete, skipping.\n";
+            cout << "Warning: line " << lineNum << " is incomplete, skipping." << endl;
             continue;
         }
 
@@ -499,18 +499,18 @@ void loadFromFile(unique_ptr<Student[]>& students, int& count) {
             if (pos != tokens[0].size() || rawId <= 0) throw invalid_argument("id");
             s.setId(static_cast<int>(rawId));
         } catch (...) {
-            cout << "Warning: invalid ID on line " << lineNum << ", skipping.\n";
+            cout << "Warning: invalid ID on line " << lineNum << ", skipping." << endl;
             continue;
         }
 
         if (seenIds.count(s.getId())) {
-            cout << "Warning: duplicate ID " << s.getId() << " on line " << lineNum << ", skipping.\n";
+            cout << "Warning: duplicate ID " << s.getId() << " on line " << lineNum << ", skipping." << endl;
             continue;
         }
 
         s.setName(trim(tokens[1]));
         if (s.getName().empty()) {
-            cout << "Warning: empty name on line " << lineNum << ", skipping.\n";
+            cout << "Warning: empty name on line " << lineNum << ", skipping." << endl;
             continue;
         }
 
@@ -524,7 +524,7 @@ void loadFromFile(unique_ptr<Student[]>& students, int& count) {
                     throw out_of_range("mark");
                 s.setMark(j, m);
             } catch (...) {
-                cout << "Warning: invalid mark on line " << lineNum << ", skipping.\n";
+                cout << "Warning: invalid mark on line " << lineNum << ", skipping." << endl;
                 marksOk = false;
                 break;
             }
@@ -538,7 +538,7 @@ void loadFromFile(unique_ptr<Student[]>& students, int& count) {
     file.close();
 
     if (temp.empty()) {
-        cout << "No records available.\n";
+        cout << "No records available." << endl;
         return;
     }
 
@@ -550,5 +550,5 @@ void loadFromFile(unique_ptr<Student[]>& students, int& count) {
 
     students = std::move(newStudents); // existing in-memory data replaced safely
     count = static_cast<int>(temp.size());
-    cout << "Loaded " << count << " student(s) from students.txt.\n";
+    cout << "Loaded " << count << " student(s) from students.txt." << endl;
 }
