@@ -9,8 +9,6 @@
 #include <string>
 using namespace std;
 
-constexpr float MINIMUM_WAGE = 17.95f;
-
 /*
  * A salaried employee that may or may not have a bonus: pay = base salary + bonus.
  */

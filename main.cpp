@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Employee.h"
 #include "Student.h"
 
 using namespace std;
@@ -7,6 +8,7 @@ using namespace std;
  * Entry point. Owns the student array via unique_ptr and drives the menu loop.
  * Each iteration displays the menu, reads a validated choice, and dispatches
  * to the corresponding function. Exits when the user selects option 11.
+ * Once the student menu exits, the employee menu runs on the same pattern.
  */
 int main() {
     auto students = unique_ptr<Student[]>{};
@@ -44,6 +46,25 @@ int main() {
                           << Student::getTotalCreated() << "\n"; break;
         }
     } while (choice != 11);
+
+    EmployeeList employees;
+
+    do {
+        cout << "\n===== Employee Management System =====\n";
+        cout << "1. Add employee\n";
+        cout << "2. Display all employees\n";
+        cout << "3. Find highest paid employee\n";
+        cout << "4. Exit\n";
+
+        choice = getValidatedInt("Enter your choice: ", 1, 4);
+
+        switch (choice) {
+            case 1: addEmployee            (employees); break;
+            case 2: displayEmployees       (employees); break;
+            case 3: findHighestPaidEmployee(employees); break;
+            case 4: cout << "Exiting.\n"; break;
+        }
+    } while (choice != 4);
 
     return 0;
 }

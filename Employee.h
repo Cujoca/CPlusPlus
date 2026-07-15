@@ -5,7 +5,9 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 
+#include <memory>
 #include <string>
+#include <vector>
 using namespace std;
 
 /*
@@ -36,5 +38,14 @@ public:
         return calculatePay() > other.calculatePay();
     }
 };
+
+// The roster owns its employees; Employee is abstract, so it is stored by pointer
+// to keep calculatePay/display polymorphic.
+using EmployeeList = vector<unique_ptr<Employee>>;
+
+// menu actions
+void addEmployee            (EmployeeList& employees);
+void displayEmployees       (const EmployeeList& employees);
+void findHighestPaidEmployee(const EmployeeList& employees);
 
 #endif //EMPLOYEE_H

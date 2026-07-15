@@ -1,7 +1,11 @@
 #include "Helper.h"
+#include <cstdlib>
 #include <iostream>
 
 using namespace std;
+
+constexpr float MINIMUM_WAGE = 17.95f;
+constexpr float MAX_WAGE     = 1000000.0f;
 
 /*
  * Trims leading and trailing whitespace from a string
@@ -23,12 +27,18 @@ bool isBlank(const string& text) {
 /*
  * Repeatedly prompts the user until a valid integer in [min, max] is entered.
  * Rejects non-numeric input, floating-point input, and out-of-range values.
+ * Terminates the program if the input stream closes: there is no value left to
+ * return and no way to re-prompt, so looping would spin forever.
  */
 int getValidatedInt(const string& prompt, const int min, const int max) {
     while (true) {
         cout << prompt;
         string line;
-        getline(cin, line);
+        if (!getline(cin, line)) {
+            cout << "\nInput stream closed with no value entered "
+                    "(end of input, or Ctrl+Z / Ctrl+D). Nothing left to read, so exiting.\n";
+            exit(0);
+        }
         const string s = trim(line);
         if (s.empty()) {
             cout << "Input cannot be empty.\n";
@@ -81,6 +91,51 @@ float getValidatedMark(const string& prompt) {
         } catch (...) {
             cout << "Invalid input. Please enter a numeric mark.\n";
         }
+    }
+}
+
+/*
+ * Repeatedly prompts the user until a valid float in [min, max] is entered.
+ * Rejects non-numeric input and values outside the given range.
+ */
+float getValidatedFloat(const string& prompt, const float min, const float max) {
+    while (true) {
+        cout << prompt;
+        string line;
+        getline(cin, line);
+        const string s = trim(line);
+        if (s.empty()) {
+            cout << "Input cannot be empty.\n";
+            continue;
+        }
+        try {
+            size_t pos;
+            const float val = stof(s, &pos);
+            if (pos != s.size()) {
+                cout << "Invalid input. Please enter a number.\n";
+                continue;
+            }
+            if (val < min || val > max) {
+                cout << "Please enter a number between " << min << " and " << max << ".\n";
+                continue;
+            }
+            return val;
+        } catch (...) {
+            cout << "Invalid input. Please enter a number.\n";
+        }
+    }
+}
+
+/*
+ * Repeatedly prompts the user until an hourly rate at or above minimum wage is
+ * entered. Rejects non-numeric input and any rate below MINIMUM_WAGE.
+ */
+float getValidatedWage(const string& prompt) {
+    while (true) {
+        const float rate = getValidatedFloat(prompt, 0.0f, MAX_WAGE);
+        if (rate >= MINIMUM_WAGE) return rate;
+        cout << "Minimum wage is $" << MINIMUM_WAGE
+             << " buddy. Try paying your workers an actual wage\n";
     }
 }
 
