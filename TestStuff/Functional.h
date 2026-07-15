@@ -4,15 +4,13 @@
 #include <functional>
 #include <vector>
 
-template <typename A, typename B>
-class VectorFunctional {
-public:
-    static std::vector<B> map(const std::vector<A> vec, const std::function<B(A)> foo) {
-        std::vector<B> result;
-        for (A elem: vec) {
-            result.push_back(foo(elem));
-        }
-        return result;
-    }
-};
+using namespace std;
+
+template <typename A, typename F>
+auto map (vector<A> ref, F foo) {
+    using B = decltype(foo(declval<A>()));
+    vector<B> res;
+    for (const auto& elem : ref) { res.push_back(foo(elem)); }
+    return res;
+}
 #endif

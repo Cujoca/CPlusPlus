@@ -8,8 +8,6 @@ add_executable(Labs main.cpp Student.cpp
         Subjects.cpp
         Helper.h
         Helper.cpp
-        Functional.cpp
-        Functional.h
         Employee.cpp
         Employee.h
         SalariedEmployee.cpp
