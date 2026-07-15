@@ -41,7 +41,7 @@ int main() {
             case 9:  saveToFile         (students, count); break;
             case 10: loadFromFile       (students, count); break;
             case 11: cout << "Exiting. Total students created: "
-                          << Student::totalCreated << "\n"; break;
+                          << Student::getTotalCreated() << "\n"; break;
         }
     } while (choice != 11);
 

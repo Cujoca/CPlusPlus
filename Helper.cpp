@@ -24,7 +24,7 @@ bool isBlank(const string& text) {
  * Repeatedly prompts the user until a valid integer in [min, max] is entered.
  * Rejects non-numeric input, floating-point input, and out-of-range values.
  */
-int getValidatedInt(const string& prompt, int min, int max) {
+int getValidatedInt(const string& prompt, const int min, const int max) {
     while (true) {
         cout << prompt;
         string line;
@@ -102,7 +102,7 @@ string getValidatedName(const string& prompt) {
  * Splits a string by a single delimiter character and returns the resulting tokens.
  * The final token after the last delimiter is always included.
  */
-vector<string> splitLine(const string& s, char delim) {
+vector<string> splitLine(const string& s, const char delim) {
     vector<string> tokens;
     size_t left = 0, right = 0;
     while ((right = s.find(delim, left)) != string::npos) {

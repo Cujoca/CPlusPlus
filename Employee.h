@@ -8,16 +8,33 @@
 #include <string>
 using namespace std;
 
-struct Employee {
-    string name;
-    float baseSalary;
+/*
+ * Pure abstract interface for every kind of employee.
+ * Holds no state and provides no implementation: derived classes supply the
+ * data and override every member. Deletion through an Employee* is safe thanks
+ * to the public virtual destructor.
+ */
+class Employee {
+public:
+    virtual ~Employee() = default;
 
-    const virtual float calculatePay() = 0;
-    const virtual void display() = 0;
-    virtual ~Employee() {}
+    // pay / presentation
+    virtual float calculatePay() const = 0;
+    virtual void  display()      const = 0;
+
+    // getters
+    virtual float  getSalary() const = 0;
+    virtual string getName()   const = 0;
+
+    // setters
+    virtual void setSalary(float s)          = 0;
+    virtual void setName(const string& n)    = 0;
+
+    // Compares two employees by their calculated pay. Provided as a basic default
+    // (using the polymorphic calculatePay); concrete classes may override if needed.
+    virtual bool comparePay(const Employee& other) const {
+        return calculatePay() > other.calculatePay();
+    }
 };
-
-
-
 
 #endif //EMPLOYEE_H

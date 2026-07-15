@@ -11,4 +11,10 @@ add_executable(Labs main.cpp Student.cpp
         Functional.cpp
         Functional.h
         Employee.cpp
-        Employee.h)
+        Employee.h
+        SalariedEmployee.cpp
+        SalariedEmployee.h
+        HourlyEmployee.cpp
+        HourlyEmployee.h
+        CommissionEmployee.cpp
+        CommissionEmployee.h)

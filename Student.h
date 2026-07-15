@@ -34,7 +34,7 @@ public:
     // getters
     int           getId()        const { return id; }
     const string& getName()      const { return name; }
-    float         getMark(int j) const { return marks[j]; }
+    float         getMark(const int j) const { return marks[j]; }
     float         getTotal()     const { return total; }
     float         getAverage()   const { return average; }
     Status        getStatus()    const { return status; }
@@ -43,39 +43,40 @@ public:
 
     // setters
     void setName(const string& n)      { name = n; }
-    void setId(int i)                  { id = i; }
-    void setMark(int j, float val)     { marks[j] = val; }
-    static void addTotalCreated(int n) { totalCreated += n; }
+    void setId(const int i)                        { id = i; }
+    void setMark(const int j, const float val)     { marks[j] = val; }
+    static void addTotalCreated(const int n)       { totalCreated += n; }
 
-    // per-student operations
-    void   copyFrom        (const Student& src);
+    // per-student operations (operate on *this*, direct member access)
     bool   operator<       (const Student& rhs) const;
     float  calculateTotal  () const;
     float  calculateAverage() const;
     Status determineStatus () const;
     Grade  determineGrade  () const;
     void   recalculate     ();
-    // student validation
-    bool isDuplicateId(const Student* students, int count, int id);
-
-    // student utilities
-    int  findStudentIndexById(const unique_ptr<Student[]>& students, int count, int id);
-    void copyStudent(Student& dst, const Student& src);
-
-
-    // menu functions
-    void addStudents         (unique_ptr<Student[]>& students, int& count);
-    void displayStudents     (const std::unique_ptr<Student[]>& students, int count);
-    void searchStudentById   (const std::unique_ptr<Student[]>& students, int count);
-    void editStudent         (unique_ptr<Student[]>& students, int count);
-    void deleteStudent       (unique_ptr<Student[]>& students, int& count);
-    void findHighestScorer   (const std::unique_ptr<Student[]>& students, int count);
-    void displayClassSummary (const std::unique_ptr<Student[]>& students, int count);
-    void sortStudents        (unique_ptr<Student[]>& students, int count);
-    void saveToFile          (const std::unique_ptr<Student[]>& students, int count);
-    void loadFromFile        (unique_ptr<Student[]>& students, int& count);
 };
 
 
+// student validation / utilities (free functions, use public getters/setters)
+bool isDuplicateId(const Student* students, int count, int id);
+int  findStudentIndexById(const unique_ptr<Student[]>& students, int count, int id);
+void copyStudent(Student& dst, const Student& src);
+
+// table rendering
+void printTableHeader();
+void printStudentRow(const Student& s);
+
+
+// menu functions
+void addStudents         (unique_ptr<Student[]>& students, int& count);
+void displayStudents     (const std::unique_ptr<Student[]>& students, int count);
+void searchStudentById   (const std::unique_ptr<Student[]>& students, int count);
+void editStudent         (unique_ptr<Student[]>& students, int count);
+void deleteStudent       (unique_ptr<Student[]>& students, int& count);
+void findHighestScorer   (const std::unique_ptr<Student[]>& students, int count);
+void displayClassSummary (const std::unique_ptr<Student[]>& students, int count);
+void sortStudents        (unique_ptr<Student[]>& students, int count);
+void saveToFile          (const std::unique_ptr<Student[]>& students, int count);
+void loadFromFile        (unique_ptr<Student[]>& students, int& count);
 
 #endif
