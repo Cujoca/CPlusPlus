@@ -82,7 +82,7 @@ void findHighestPaidEmployee(const EmployeeList& employees) {
 
     const Employee* highest = employees.front().get();
     for (const auto& employee : employees) {
-        if (employee->comparePay(*highest)) highest = employee.get();
+        if (*employee < *highest) highest = employee.get();
     }
 
     highest->display();

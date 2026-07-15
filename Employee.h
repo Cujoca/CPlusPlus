@@ -32,15 +32,14 @@ public:
     virtual void setSalary(float s)          = 0;
     virtual void setName(const string& n)    = 0;
 
-    // Compares two employees by their calculated pay. Provided as a basic default
-    // (using the polymorphic calculatePay); concrete classes may override if needed.
-    virtual bool comparePay(const Employee& other) const {
+    // Compares two employees by their calculated pay. Provided as a basic default.
+    // Since concrete classes calculate salary by themselves anyway, prob won't be overidden
+    virtual bool operator<(const Employee& other) const {
         return calculatePay() > other.calculatePay();
     }
 };
 
 // The roster owns its employees; Employee is abstract, so it is stored by pointer
-// to keep calculatePay/display polymorphic.
 using EmployeeList = vector<unique_ptr<Employee>>;
 
 // menu actions
